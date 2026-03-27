@@ -1,5 +1,5 @@
 {
-  "name": "workspace-injector",
+  "name": "workspace-injector-preview",
   "displayName": "Workspace Injector",
   "description": "Open a workspace file and rewrite its folders so the currently opened folder becomes the primary entry.",
   "version": "0.1.0",
