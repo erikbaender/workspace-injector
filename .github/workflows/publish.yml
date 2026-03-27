@@ -52,6 +52,14 @@ jobs:
 
       - name: Sync manifest version from release tag
         run: |
+          CURRENT_VERSION="$(node -p "require('./package.json').version")"
+          TARGET_VERSION="${{ steps.release_version.outputs.version }}"
+
+          if [ "$CURRENT_VERSION" = "$TARGET_VERSION" ]; then
+            echo "package.json already matches release version $TARGET_VERSION."
+            exit 0
+          fi
+
           npm version "${{ steps.release_version.outputs.version }}" --no-git-tag-version
 
       - name: Commit synced version files
