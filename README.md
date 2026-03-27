@@ -1,6 +1,6 @@
 # Workspace Injector
 
-This Visual Studio Code extension helps you open an existing `.code-workspace` file with the currently opened folder injected as the primary folder.
+This Visual Studio Code extension helps you open an existing workspace file with the currently opened folder injected as the primary folder.
 
 This allows you to decouple your personal tooling from the `.vscode` directory in a production repository to a `.code-workspace` file without being forced into the workspace-based workflow, which is by itself not designed for this purpose and would result in you either having to manually edit the folder paths to switch between the active repository in your workspace, or in keeping multiple copies of the same workspace configuration for different repositories which all have to be synced and maintained separately.
 
