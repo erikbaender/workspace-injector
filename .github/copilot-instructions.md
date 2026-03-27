@@ -29,4 +29,14 @@ When `workspaceInjector.openWorkspaceWithCurrentFolder` runs:
 
 - Keep command IDs and state keys synchronized between `package.json` and `src/extension.ts`.
 - Prefer clear naming with "workspace" and "context" terminology, not "template" terminology.
-- If behavior changes, update this file and `README.md` in the same change.
+- Keep `README.md` user-focused. Store maintainer release and publishing details in `RELEASING.md`.
+- If runtime behavior changes, update this file and `README.md` in the same change.
+- If release automation changes, update `.github/workflows/ci.yml`, `.github/workflows/publish.yml`, and `RELEASING.md` in the same change.
+
+## Release Automation
+
+- CI workflow: `.github/workflows/ci.yml` runs build validation on push and pull request.
+- Publish workflow: `.github/workflows/publish.yml` runs on published GitHub releases.
+- Publish workflow requirements:
+	- Repository secret `VSCE_PAT` must be configured.
+	- Release tag must match package version format `v<package.json version>`.

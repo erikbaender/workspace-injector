@@ -34,3 +34,5 @@ npm run build
 ```
 
 Press `F5` in VS Code to launch an Extension Development Host.
+
+For maintainer release and publishing steps, see [RELEASING.md](RELEASING.md).
