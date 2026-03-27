@@ -41,4 +41,6 @@ When `workspaceInjector.openWorkspaceWithCurrentFolder` runs:
 	- Repository secret `VSCE_PAT` must be configured.
 	- Release tag must use format `v<major>.<minor>.<patch>`.
 	- Publish workflow syncs `package.json` and `package-lock.json` version from the release tag.
+	- Version sync commit is attempted after publish to keep retries robust.
+	- Publish uses `--skip-duplicate` so reruns of the same release tag are safe.
 	- If GitHub Release is marked pre-release, Marketplace publish uses `--pre-release`.
