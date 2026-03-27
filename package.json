@@ -1,0 +1,39 @@
+{
+  "name": "workspace-injector",
+  "displayName": "Workspace Injector",
+  "description": "Open a workspace file and rewrite its folders so the currently opened folder becomes the primary entry.",
+  "version": "0.0.1",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "workspaceInjector.openWorkspaceWithCurrentFolder",
+        "title": "Inject Open Folder Into Workspace",
+        "category": "Workspace Injector"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "workspaceInjector.openWorkspaceWithCurrentFolder"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "watch": "tsc -w -p ."
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/vscode": "^1.95.0",
+    "typescript": "^5.5.4"
+  }
+}

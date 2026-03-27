@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Build output
+out/
+
+# VS Code extension packaging
+*.vsix
+
+# VS Code extension test artifacts
+.vscode-test/
+
+# OS metadata
+.DS_Store
