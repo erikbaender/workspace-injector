@@ -16,9 +16,20 @@ This repository includes GitHub Actions workflows for automated build and publis
 
 ## Publish Flow
 
-1. Update the extension version in `package.json`.
-2. Create and publish a GitHub Release with tag `v<version>` (for example `v0.0.2`).
-3. The publish workflow validates that release tag and `package.json` version match, then publishes to the Marketplace.
+1. Create and publish a GitHub Release with tag `v<version>` (for example `v0.0.2`).
+2. The publish workflow derives the extension version from the release tag.
+3. The workflow updates `package.json` and `package-lock.json` to that version and pushes the change to the default branch.
+4. The workflow packages and publishes to the Marketplace.
+
+### Pre-release behavior
+
+- If the GitHub Release is marked as pre-release, the workflow publishes a Marketplace pre-release (`vsce publish --pre-release`).
+- If the GitHub Release is not marked as pre-release, the workflow publishes a normal Marketplace release.
+
+### Tag requirements
+
+- Tags must use format `v<major>.<minor>.<patch>`.
+- Example: `v0.0.2`.
 
 ## Local Packaging And Publish Commands
 

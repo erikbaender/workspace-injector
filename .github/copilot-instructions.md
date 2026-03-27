@@ -39,4 +39,6 @@ When `workspaceInjector.openWorkspaceWithCurrentFolder` runs:
 - Publish workflow: `.github/workflows/publish.yml` runs on published GitHub releases.
 - Publish workflow requirements:
 	- Repository secret `VSCE_PAT` must be configured.
-	- Release tag must match package version format `v<package.json version>`.
+	- Release tag must use format `v<major>.<minor>.<patch>`.
+	- Publish workflow syncs `package.json` and `package-lock.json` version from the release tag.
+	- If GitHub Release is marked pre-release, Marketplace publish uses `--pre-release`.
