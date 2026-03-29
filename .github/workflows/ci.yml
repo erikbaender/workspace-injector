@@ -3,6 +3,7 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -28,6 +29,25 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Validate manifest and lockfile metadata sync
+        run: |
+          PKG_NAME="$(node -p "require('./package.json').name")"
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          LOCK_NAME="$(node -p "require('./package-lock.json').name")"
+          LOCK_VERSION="$(node -p "require('./package-lock.json').version")"
+
+          if [ "$PKG_NAME" != "$LOCK_NAME" ]; then
+            echo "package name mismatch: package.json=$PKG_NAME package-lock.json=$LOCK_NAME"
+            exit 1
+          fi
+
+          if [ "$PKG_VERSION" != "$LOCK_VERSION" ]; then
+            echo "package version mismatch: package.json=$PKG_VERSION package-lock.json=$LOCK_VERSION"
+            exit 1
+          fi
+
+          echo "package metadata is synchronized."
 
       - name: Build
         run: npm run build

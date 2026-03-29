@@ -1,8 +1,8 @@
 {
-  "name": "workspace-injector-preview",
-  "displayName": "Workspace Injector Preview",
+  "name": "code-workspace-injector",
+  "displayName": "Code Workspace Injector",
   "description": "Open a workspace file and rewrite its folders so the currently opened folder becomes the primary entry.",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "publisher": "erikbaender",
   "license": "MIT",
   "repository": {

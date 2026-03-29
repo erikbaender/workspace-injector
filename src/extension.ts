@@ -1,12 +1,11 @@
 import * as vscode from "vscode";
+import { COMMAND_ID, LAST_WORKSPACE_DIRECTORY_KEY } from "./constants";
 
 type WorkspaceFile = {
     folders?: Array<{ name?: string; path?: string; uri?: string }>;
     [key: string]: unknown;
 };
 
-const COMMAND_ID = "workspaceInjector.openWorkspaceWithCurrentFolder";
-const LAST_WORKSPACE_DIRECTORY_KEY = "workspaceInjector.lastWorkspaceDirectory";
 const textDecoder = new TextDecoder("utf-8");
 const textEncoder = new TextEncoder();
 

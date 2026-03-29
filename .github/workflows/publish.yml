@@ -1,8 +1,13 @@
 name: Publish Extension
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      prerelease:
+        description: "Publish as Marketplace pre-release"
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -35,33 +40,6 @@ jobs:
             exit 1
           fi
 
-      - name: Resolve release version from tag
-        id: release_version
-        run: |
-          TAG_NAME="${{ github.event.release.tag_name }}"
-
-          if [[ "$TAG_NAME" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
-            VERSION="${BASH_REMATCH[1]}"
-          else
-            echo "Release tag ($TAG_NAME) must use format v<major>.<minor>.<patch>, for example v0.0.2."
-            exit 1
-          fi
-
-          echo "tag=$TAG_NAME" >> "$GITHUB_OUTPUT"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-
-      - name: Sync manifest version from release tag
-        run: |
-          CURRENT_VERSION="$(node -p "require('./package.json').version")"
-          TARGET_VERSION="${{ steps.release_version.outputs.version }}"
-
-          if [ "$CURRENT_VERSION" = "$TARGET_VERSION" ]; then
-            echo "package.json already matches release version $TARGET_VERSION."
-            exit 0
-          fi
-
-          npm version "${{ steps.release_version.outputs.version }}" --no-git-tag-version
-
       - name: Install dependencies
         run: npm ci
 
@@ -80,7 +58,7 @@ jobs:
         run: |
           set +e
 
-          if [ "${{ github.event.release.prerelease }}" = "true" ]; then
+          if [ "${{ inputs.prerelease }}" = "true" ]; then
             PUBLISH_OUTPUT="$(npx vsce publish --pre-release --skip-duplicate -p "${{ secrets.VSCE_PAT }}" 2>&1)"
             PUBLISH_STATUS=$?
           else
@@ -99,18 +77,3 @@ jobs:
 
             exit "$PUBLISH_STATUS"
           fi
-
-      - name: Commit synced version files
-        continue-on-error: true
-        run: |
-          if git diff --quiet -- package.json package-lock.json; then
-            echo "Version files already match release tag."
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add package.json package-lock.json
-          git commit -m "chore: sync version to ${{ steps.release_version.outputs.version }} from release ${{ steps.release_version.outputs.tag }}"
-          git push origin "HEAD:${{ github.event.repository.default_branch }}"

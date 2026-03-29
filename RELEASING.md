@@ -1,4 +1,4 @@
-# Releasing Workspace Injector
+# Releasing Code Workspace Injector
 
 This guide is for maintainers.
 
@@ -7,7 +7,7 @@ This guide is for maintainers.
 This repository includes GitHub Actions workflows for automated build and publish:
 
 - CI build runs on every push and pull request.
-- Marketplace publish runs when a GitHub Release is published.
+- Marketplace publish runs only when triggered manually from GitHub Actions.
 
 ## One-time Setup
 
@@ -16,27 +16,24 @@ This repository includes GitHub Actions workflows for automated build and publis
 
 ## Publish Flow
 
-1. Create and publish a GitHub Release with tag `v<version>` (for example `v0.0.2`).
-2. The publish workflow derives the extension version from the release tag.
-3. The workflow updates `package.json` and `package-lock.json` to that version for the workflow run.
-4. The workflow packages and publishes to the Marketplace.
-5. After publish succeeds, the workflow attempts to push the version sync commit back to the default branch.
+1. Update `version` in `package.json` to the version you want to publish.
+2. Commit and push your changes (including `package-lock.json` if it changed).
+3. Open GitHub Actions and run the **Publish Extension** workflow manually.
+4. Set the `prerelease` input:
+5. `false` publishes a normal Marketplace release.
+6. `true` publishes a Marketplace pre-release (`vsce publish --pre-release`).
+7. The workflow builds, packages, and publishes using the package version defined in `package.json`.
 
 ### Retry behavior
 
-- If a release run fails before publish, you can rerun the same release without creating a new version tag.
+- If a publish run fails before publish, rerun the same workflow run settings.
 - Publish uses `--skip-duplicate`, so reruns are safe even if that version was already published.
-- Version sync commit is best effort and runs after publish; commit push issues do not block the publish result.
+- The workflow does not mutate or commit version files.
 
 ### Pre-release behavior
 
-- If the GitHub Release is marked as pre-release, the workflow publishes a Marketplace pre-release (`vsce publish --pre-release`).
-- If the GitHub Release is not marked as pre-release, the workflow publishes a normal Marketplace release.
-
-### Tag requirements
-
-- Tags must use format `v<major>.<minor>.<patch>`.
-- Example: `v0.0.2`.
+- If workflow input `prerelease` is `true`, the workflow publishes a Marketplace pre-release (`vsce publish --pre-release`).
+- If workflow input `prerelease` is `false`, the workflow publishes a normal Marketplace release.
 
 ## Local Packaging And Publish Commands
 

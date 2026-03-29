@@ -1,4 +1,4 @@
-# Workspace Injector
+# Code Workspace Injector
 
 ![Workspace Injector demo](.github/assets/workspace-injector-demo.gif)
 
